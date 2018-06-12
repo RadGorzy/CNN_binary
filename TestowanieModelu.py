@@ -3,7 +3,7 @@ import scipy
 import numpy
 
 #Wczytanie zdjecia, ktore chcemy sklasyfikowac
-test = scipy.ndimage.imread("testing/0000000003.bin.pcd_d_c_4.pcd_p4.jpg",flatten=1)  # z tych przykladowych to zle klasyfikuje 92.png, pozostale ok - wyglada na to, model jest dobrze wytrenowany, ale nie wiem nadal dlaczego tak
+test = scipy.ndimage.imread("testing/0000000003.bin.pcd_d_c_4.pcd_p4.jpg",flatten=1)  # z tych przykladowych to zle klasyfikuje 92.png, pozostale ok - wyglada na to, model jest dobrze wytrenowany
 # print("zdjecie"+str(test[6][15]))
 test = tf.multiply(tf.cast(test, tf.float32), 1.0 / 255.0)
 test=tf.expand_dims(tf.expand_dims(test,axis=-1),axis=0)

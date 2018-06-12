@@ -14,7 +14,7 @@
     <SUITE FILE_PATH="coverage/CNN_binary$TestowanieModeluBulk.coverage" NAME="TestowanieModeluBulk Coverage Results" MODIFIED="1528235365902" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/CNN_binary$mnist_3_1_convolutional_bigger_dropout_edited.coverage" NAME="mnist_3.1_convolutional_bigger_dropout_edited Coverage Results" MODIFIED="1527082802708" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/CNN_binary$mnist_3_1_convolutional_bigger_dropout_edited_dataset.coverage" NAME="mnist_3.1_convolutional_bigger_dropout_edited_dataset Coverage Results" MODIFIED="1528281830964" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/CNN_binary$Create_Dataset.coverage" NAME="Create_Dataset Coverage Results" MODIFIED="1528795807713" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/CNN_binary$Create_Dataset.coverage" NAME="Create_Dataset Coverage Results" MODIFIED="1528796742544" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/CNN_binary$temp_tfData.coverage" NAME="temp_tfData Coverage Results" MODIFIED="1527008409263" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/CNN_binary$test_tutotrial.coverage" NAME="test_tutotrial Coverage Results" MODIFIED="1527151328006" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/CNN_binary$list_PNGfiles.coverage" NAME="list_PNGfiles Coverage Results" MODIFIED="1527070170237" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -35,10 +35,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Create_Dataset.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Create_Dataset.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Create_Dataset.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1111">
+            <state relative-caret-position="-139">
               <caret line="43" column="47" lean-forward="false" selection-start-line="43" selection-start-column="47" selection-end-line="43" selection-end-column="47" />
               <folding>
                 <element signature="e#186#209#0" expanded="true" />
@@ -47,11 +47,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestowanieModelu.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TestowanieModelu.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/TestowanieModelu.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
-              <caret line="5" column="37" lean-forward="false" selection-start-line="5" selection-start-column="37" selection-end-line="5" selection-end-column="37" />
+            <state relative-caret-position="90">
+              <caret line="5" column="195" lean-forward="false" selection-start-line="5" selection-start-column="195" selection-end-line="5" selection-end-column="195" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -124,9 +124,9 @@
         <option value="$PROJECT_DIR$/build_TFRecordData.py" />
         <option value="$PROJECT_DIR$/TestowanieModeluBulk.py" />
         <option value="$PROJECT_DIR$/mnist_3.1_convolutional_bigger_dropout_edited_dataset.py" />
-        <option value="$PROJECT_DIR$/TestowanieModelu.py" />
         <option value="$PROJECT_DIR$/CNN_binary_dataset.py" />
         <option value="$PROJECT_DIR$/Create_Dataset.py" />
+        <option value="$PROJECT_DIR$/TestowanieModelu.py" />
       </list>
     </option>
   </component>
@@ -681,16 +681,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TestowanieModelu.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="5" column="37" lean-forward="false" selection-start-line="5" selection-start-column="37" selection-end-line="5" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/CNN_binary_dataset.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="162">
@@ -703,10 +693,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Create_Dataset.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1111">
+        <state relative-caret-position="-139">
           <caret line="43" column="47" lean-forward="false" selection-start-line="43" selection-start-column="47" selection-end-line="43" selection-end-column="47" />
           <folding>
             <element signature="e#186#209#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TestowanieModelu.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="5" column="195" lean-forward="false" selection-start-line="5" selection-start-column="195" selection-end-line="5" selection-end-column="195" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
