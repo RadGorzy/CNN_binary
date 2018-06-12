@@ -1,0 +1,4 @@
+car
+building
+tree
+street_light

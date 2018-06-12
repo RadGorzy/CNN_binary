@@ -1,0 +1,9 @@
+*.jpg
+*.png
+/data/TFRecords/test/
+/data/TFRecords/train/
+/tensorboard_test/old
+/tensorboard_train/old
+/testing
+/zapisane/old
+/modele
