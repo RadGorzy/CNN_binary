@@ -1,7 +1,6 @@
 *.jpg
 *.png
-/data/TFRecords/test/
-/data/TFRecords/train/
+*.tfrecord
 /tensorboard_test/old
 /tensorboard_train/old
 /testing
