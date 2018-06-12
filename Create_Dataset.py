@@ -1,16 +1,10 @@
 #zawiera funkcje do wczytania i edycji danych z plikow TFRecords
-"wersja wykorzystujaca strukture tf.data , a nie przestarzaly sposob z wykorzystaniem QueueRunner (np. tf.train.batch())"
+#wersja wykorzystujaca strukture tf.data , a nie przestarzaly sposob z wykorzystaniem QueueRunner (np. tf.train.batch())
 import tensorflow as tf
 import numpy as np
 import list_TFRecordFiles as TFRfile
 
-#np.set_printoptions(threshold=np.inf)  # zeby wypisac cala tablice w konsoli
-"""
-filenames= TFRfile.tfrecord_auto_traversal("./data/TFRecords")
-dataset = tf.data.TFRecordDataset("./data/TFRecords/train-00000-of-00002.tfrecord")
-print(filenames)
-print(dataset)
-"""
+
 flags = tf.app.flags
 FLAGS = flags.FLAGS
 #flags.DEFINE_integer("image_number_train", 9, "Number of images in your tfrecord, default is 300.")
@@ -47,8 +41,7 @@ def get_features(example_proto):
 
 
 # """
-def edit(image, height, width, filename, label,
-         resize=0):  # tutaj tez dobrze byloby tez podawac jako parametr liczbe klas, zeby nie zmieniac recznie wewnatrz funkcji
+def edit(image, height, width, filename, label,resize=0):
     image = tf.image.decode_jpeg(image, channels=1)  # image_raw
     if resize == 1:
         image = tf.image.resize_image_with_crop_or_pad(image, FLAGS.image_height,
@@ -69,7 +62,6 @@ def edit(image, height, width, filename, label,
         #label_wec = tf.expand_dims(label_wec,0)
     else:
         print("Wartosc label musi byc >=1")
-    # print("tescik: " + str(image.shape))
     return image, height, width, filename, label_wec
 
 
@@ -100,7 +92,7 @@ def next_batch(dataset, batch_size):
 
 
 # def read_to_array(path)
-
+#main function just for testing :
 def main(unused_argv):
     batch_size_train = 1
     train_dataset, size = read_data_set("./data/TFRecords/train")  # padded_batch(100,padded_shapes=([None],[None],[None],[None],[None])).
