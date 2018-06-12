@@ -1,0 +1,5 @@
+Put your clases name in "label.txt" (same as folder names in "train" and "test" subdirectories). For example:
+car
+building
+tree
+street_light
