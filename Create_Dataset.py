@@ -3,13 +3,13 @@
 import tensorflow as tf
 import numpy as np
 import list_TFRecordFiles as TFRfile
-
+import cv2 as cv #do celow testowych
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
 #flags.DEFINE_integer("image_number_train", 9, "Number of images in your tfrecord, default is 300.")
 #flags.DEFINE_integer("image_number_test", 1, "Number of images in your tfrecord, default is 300.")
-flags.DEFINE_integer("class_number", 4, "Number of class in your dataset/label.txt, default is 3.")
+flags.DEFINE_integer("class_number", 5, "Number of class in your dataset/label.txt, default is 3.") #to lepiej przekazywac jako parametr (po dodaniu klas mozna zapomniec tu zmienic)
 flags.DEFINE_integer("image_height", 299, "Height of the output image after crop and resize. Default is 299.")
 flags.DEFINE_integer("image_width", 299, "Width of the output image after crop and resize. Default is 299.")
 
@@ -127,12 +127,17 @@ def main(unused_argv):
             print("Train_Image_shape" + str(pre_image.shape))
             print("Train_Label_shape\n" + str(pre_label.shape))
             print("Filename" + str(pre_filename) + "label: " + str(pre_label) + "----------")
+            print(np.unique(pre_image))
+            pre_image = np.multiply(pre_image, 255)
+            cv.imwrite("./testing/"+str(pre_filename)+"_"+str(pre_label)+"train.jpg",pre_image[0,:,:,0])
             #zainicjalizuj zbiorem testujacym
             sess.run(test_init_op)
             pre_image, pre_height, pre_width, pre_filename, pre_label = sess.run(next_element)
             print("Test_Image_shape" + str(pre_image.shape))
             print("Test_Label_shape\n" + str(pre_label.shape))
             print("Filename" + str(pre_filename) + "label: " + str(pre_label) + "----------")
+            pre_image = np.multiply(pre_image, 255)
+            cv.imwrite("./testing/" + str(pre_filename) + "_" + str(pre_label) + "test.jpg",pre_image[0,:,:,0])
 
 
 if __name__ == '__main__':

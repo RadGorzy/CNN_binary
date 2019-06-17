@@ -64,12 +64,16 @@ import threading
 
 import numpy as np
 import tensorflow as tf
+import argparse
 
-tf.app.flags.DEFINE_string('train_directory', './data/train',
+
+
+
+tf.app.flags.DEFINE_string('train_directory','/home/radek/DeepLearning/datasets_3D/CNN_binary_3D_MapSv/train' ,   #'/home/radek/DeepLearning/datasets/CNN_binary/DSP_1/train' #'./data/train',
                            'Training data directory')
 tf.app.flags.DEFINE_string('validation_directory', './data/validation',
                            'Validation data directory')
-tf.app.flags.DEFINE_string('test_directory', './data/test',
+tf.app.flags.DEFINE_string('test_directory','/home/radek/DeepLearning/datasets_3D/CNN_binary_3D_MapSv/test', #/home/radek/DeepLearning/datasets/CNN_binary/DSP_1/test #'./data/test',
                            'Test data directory')
 tf.app.flags.DEFINE_string('output_directory_train', './data/TFRecords/train',
                            'Output data directory - train')
@@ -88,7 +92,7 @@ tf.app.flags.DEFINE_integer('test_shards', 4,
                             'Number of shards in test TFRecord files.')
 
 tf.app.flags.DEFINE_integer('num_threads', 4,
-                            'Number of threads to preprocess the images.')
+                            'Number of threads to preprocess the images.') #zauwazylem ze w wersjo TF GPU jak dam wiecej niz 2 (np. 4) to porgram jakby sie zwiesza (liczy dalej ale nic nie da sie kliknac) moze to tez wynikac z duzej ilosci zdjec (a nie ze wersja GPU)
 
 # The labels file contains a list of valid labels are held in this file.
 # Assumes that the file contains entries as such:
@@ -97,7 +101,9 @@ tf.app.flags.DEFINE_integer('num_threads', 4,
 #   flower
 # where each line corresponds to a label. We map each label contained in
 # the file to an integer corresponding to the line number starting from 0.
-tf.app.flags.DEFINE_string('labels_file', './data/label.txt', 'Labels file')
+tf.app.flags.DEFINE_string('labels_file',
+                           '/home/radek/DeepLearning/datasets_3D/CNN_binary_3D_MapSv/label.txt', #/home/radek/DeepLearning/datasets/CNN_binary/DSP_1/label.txt #'./data/label.txt',
+                           'Labels file')
 
 FLAGS = tf.app.flags.FLAGS
 
@@ -151,7 +157,7 @@ class ImageCoder(object):
         # Create a single Session to run all image coding calls.
         self._sess = tf.Session()
 
-        # Initializes function that converts PNG to JPEG data.
+        # Initializes function that converts PNG to JPEG data
         self._png_data = tf.placeholder(dtype=tf.string)
         image = tf.image.decode_png(self._png_data, channels=3)
         self._png_to_jpeg = tf.image.encode_jpeg(image, format='rgb', quality=100)
@@ -180,7 +186,6 @@ def _is_png(filename):
       boolean indicating if the image is a PNG.
     """
     return '.png' in filename
-
 
 def _process_image(filename, coder):
     """Process a single image file.
@@ -409,6 +414,27 @@ def _process_dataset(name, directory, num_shards, labels_file):
 
 
 def main(unused_argv):
+    # construct the argument parse and parse the arguments
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-train_dir", "--train_directory", required=False,
+                    help="path to train directory")
+    ap.add_argument("-test_dir", "--test_directory", required=False,
+                    help="path to test directory")
+    ap.add_argument("-label", "--label_path", required=False,
+                    help="path to label.txt")
+    args = vars(ap.parse_args())
+    #if no arguments were given:
+    if args["train_directory"]==None or args["test_directory"]==None or args["label_path"]==None:
+        #use FLAGS:
+        test_directory=FLAGS.test_directory
+        train_directory=FLAGS.train_directory
+        labels_file = FLAGS.labels_file
+    #else use Passed arguments
+    else:
+        test_directory = args["test_directory"]
+        train_directory = args["train_directory"]
+        labels_file = args["label_path"]
+
     assert not FLAGS.train_shards % FLAGS.num_threads, (
         'Please make the FLAGS.num_threads commensurate with FLAGS.train_shards')
     assert not FLAGS.validation_shards % FLAGS.num_threads, (
@@ -420,14 +446,13 @@ def main(unused_argv):
     print('Saving results to %s and %s' % (FLAGS.output_directory_train, FLAGS.output_directory_validation))
 
     # Run it!
-    print("------------------------------------")
+    #print("------------------------------------")
     #_process_dataset('validation', FLAGS.validation_directory,
                      #FLAGS.validation_shards, FLAGS.labels_file)
-    _process_dataset('test', FLAGS.test_directory,
-                     FLAGS.test_shards, FLAGS.labels_file)
-    #print("------------------------------------")
-    #_process_dataset('train', FLAGS.train_directory,
-     #                FLAGS.train_shards, FLAGS.labels_file)
+    print("Processing test------------------------------------")
+    _process_dataset('test', test_directory, FLAGS.test_shards, labels_file)
+    print("Processing train------------------------------------")
+    _process_dataset('train', train_directory,FLAGS.train_shards, labels_file)
 
 
 if __name__ == '__main__':

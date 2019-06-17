@@ -1,0 +1,20 @@
+# na podstawie mnist_3.1_convolutional_bigger_dropout
+
+# neural network structure for this sample:
+#
+# · · · · · · · · · ·      (input data, 1-deep)                 X [batch, 299, 299, 1]
+# @ @ @ @ @ @ @ @ @ @   -- conv. layer 6x6x1=>6 stride 1        W1 [6, 6, 1, 6]        B1 [6]
+# ∶∶∶∶∶∶∶∶∶∶∶∶∶∶∶∶∶∶∶                                           Y1 [batch, 299, 299, 6]
+#   @ @ @ @ @ @ @ @     -- conv. layer 5x5x6=>12 stride 2       W2 [5, 5, 6, 12]        B2 [12]
+#   ∶∶∶∶∶∶∶∶∶∶∶∶∶∶∶                                             Y2 [batch, 150, 150, 12]
+#     @ @ @ @ @ @       -- conv. layer 4x4x12=>24 stride 2      W3 [4, 4, 12, 24]       B3 [24]
+#     ∶∶∶∶∶∶∶∶∶∶∶                                               Y3 [batch, 75, 75, 24] => reshaped to YY [batch, 75*75*24]  
+#      \x/x\x\x/       -- fully connected layer (relu+dropout) W4 [75*75*24, 200]       B4 [200]
+#       · · · ·                                                 Y4 [batch, 200]
+#       \x/x\x/         -- fully connected layer (softmax)      W5 [200, 4]           B5 [4]
+#        · · ·                                                  Y [batch, 4]
+
+
+10000 batch po 100 kazdy (czyli troche ponad 10 epok - zdjec w zb. tren jest 96383)
+max accuracy na danych trenujacych
+9740: accuracy:0.89 loss: 41.3807 (lr:0.00012225275933489693) 

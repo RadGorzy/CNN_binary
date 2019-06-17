@@ -4,7 +4,10 @@ import tensorflow as tf
 import math
 import numpy
 import Create_Dataset as Data
-
+tf.app.flags.DEFINE_integer('number_of_classes', 5,
+                            'Number of classes (among which we will classify images) in taining and test dataset')
+FLAGS = tf.app.flags.FLAGS
+print("Learning {} classes".format(str(FLAGS.number_of_classes)))
 
 print("Tensorflow version " + tf.__version__)
 tf.set_random_seed(0)
@@ -50,8 +53,8 @@ test_init_op = iterator.make_initializer(test_dataset)
 #       ∶∶∶∶∶∶∶                                                 Y5 [batch, 19, 19, 96] => reshaped to YY [batch, 19*19*96]
 #      \x/x\x\x/ ✞      -- fully connected layer (relu+dropout) W6 [19*19*96, 200]     B4 [200]
 #       · · · ·                                                 Y6 [batch, 200]
-#       \x/x\x/         -- fully connected layer (softmax)      W7 [200, 4]            B5 [4]
-#        · · ·                                                  Y  [batch, 4]
+#       \x/x\x/         -- fully connected layer (softmax)      W7 [200, 5]            B5 [5]
+#        · · ·                                                  Y  [batch, 5]
 sess = tf.InteractiveSession()
 
 
@@ -86,8 +89,8 @@ B5 = tf.Variable(tf.constant(0.1, tf.float32, [O]), name='B5')
 
 W6 = tf.Variable(tf.truncated_normal([19 * 19 * O, P], stddev=0.1), name='W6')
 B6 = tf.Variable(tf.constant(0.1, tf.float32, [P]), name='B6')
-W7 = tf.Variable(tf.truncated_normal([P, 4], stddev=0.1), name='W7')
-B7 = tf.Variable(tf.constant(0.1, tf.float32, [4]), name='B7')
+W7 = tf.Variable(tf.truncated_normal([P, FLAGS.number_of_classes], stddev=0.1), name='W7')
+B7 = tf.Variable(tf.constant(0.1, tf.float32, [FLAGS.number_of_classes]), name='B7')
 
 # The model
 stride = 1  # output is 28x28
@@ -114,7 +117,8 @@ Y = tf.nn.softmax(Ylogits)
 # TensorFlow provides the softmax_cross_entropy_with_logits function to avoid numerical stability
 # problems with log(0) which is NaN
 cross_entropy = tf.nn.softmax_cross_entropy_with_logits_v2(logits=Ylogits, labels=next_element[4])
-cross_entropy = tf.reduce_mean(cross_entropy)*100
+#Also add this line to bring the test and training cross-entropy to the same scale for display:
+cross_entropy = tf.reduce_mean(cross_entropy)*100                                                   #UWAGA TO *100 jest chyba tylko do wizualizacji - nie poinno miec wplyw na ucznie (orginalnie w tutorialu train batch bylo 100, a test wczytywalismy na raz 10000 zdjec (czyli 100*100)
 # training step, the learning rate is a placeholder
 train_step = tf.train.AdamOptimizer(lr).minimize(cross_entropy)
 
@@ -208,11 +212,18 @@ def training_step(i, update_test_data, update_train_data):
     sess.run(train_step, feed_dict={lr: learning_rate, pkeep: 0.75}) #0.75
 
 
-epochs=15
+epochs=5 #dla CNN_mapillary_streetview
 rounded_size=size - size % -batch_size_train #czyli rounded_size to jest zokraglony rozmiar zbioru trenujacego do nastepnej mozliwej do osiagniecia w petli wartosci, (np. size=96347, batch= 100, rounded_size=96400) ->po to aby spelnic warunek w parametrze funkcji training step -> (i*batch_size_train) % rounded_size == 0)
 print("rounded size= "+str(rounded_size))
+iterations=int((rounded_size/batch_size_train)*epochs)
+print("Doing "+str(iterations)+" iterations, with batches of "+str(batch_size_train)+" which results in "+str(epochs)+" epochs.")
 #sess.run(training_init_op) # to ininjalizuje tylko dataset, czyli pobiera jakby kolejne zdjecia, nie zeruje natomiast innych wielkosci np. train step
-for i in range(9641): training_step(i, (i*batch_size_train) % rounded_size == 0, i % 20 == 0) #for i in range(10000+1): training_step(i, i % 100 == 0, i % 20 == 0)
+for i in range(iterations+1):
+    if(i<=3000):
+        training_step(i, i % 300 == 0,
+                      i % 20 == 0)  # for i in range(9641): training_step(i, (i*batch_size_train) % rounded_size == 0, i % 20 == 0) #for i in range(10000+1): training_step(i, i % 100 == 0, i % 20 == 0)
+    else:
+        training_step(i, (i*batch_size_train) % rounded_size == 0, i % 20 == 0)# for i in range(9641): training_step(i, (i*batch_size_train) % rounded_size == 0, i % 20 == 0) #for i in range(10000+1): training_step(i, i % 100 == 0, i % 20 == 0)
 
 #do zapisyania parametro (tez calego grafu)
 save_path=saver.save(sess, './zapisane/my-model')
