@@ -2,12 +2,9 @@
 *.png
 *.tfrecord
 *.pyc
-*.radek-G751JT
 /.idea
 /tensorboard_test/old/
 /tensorboard_train/old/
-/tensorboard_test/Modele/
-/tensorboard_train/Modele/
 /testing
 #/zapisane/old
 /modele
