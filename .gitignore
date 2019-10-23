@@ -5,11 +5,15 @@
 /.idea
 /tensorboard_test/old/
 /tensorboard_train/old/
+/tensorboard_test/Modele/
+/tensorboard_train/Modele/
 /testing
 #/zapisane/old
 /modele
 /data/list_deleted.py
+/data/deleted_list.txt
 /TestowanieModelu.py
 /TestowanieModeluBulk.py
 /zapisane
 /label_info
+/checkpoints/my

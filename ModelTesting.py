@@ -1,8 +1,7 @@
 import tensorflow as tf
-import scipy
+import imageio
 import numpy
-from scipy.misc import imsave
-
+#tested with tensorflow-gpu==1.9
 print("IM IN PYTHON ................")
 #solves problem: https://github.com/google/oauth2client/issues/642
 #import sys
@@ -90,6 +89,12 @@ def classify_multiple_projections_and_get_response_vector(test,modelDirectory,nu
     with tf.Session() as sess:
         # import previously exported graph
         saver = tf.train.import_meta_graph(modelDirectory + '/my-model.meta')
+        """
+        counter = 0
+        for op in tf.get_default_graph().get_operations():
+            print("{} {}".format(counter, str(op.name)))
+            counter = counter + 1
+        """
         saver.restore(sess, tf.train.latest_checkpoint(modelDirectory))
 
         # Getting operations, tensors (elements of the graph, so also of the nn model)
@@ -132,7 +137,7 @@ def main(unused_argv):
     # Wczytanie zdjecia, ktore chcemy sklasyfikowac
 
     vec=[]
-    test = scipy.ndimage.imread("./testing/[b'building_CasV_1_h00_p039.jpg']_[[0. 1. 0. 0. 0.]]test.jpg",flatten=1)
+    test = numpy.asarray(imageio.imread("./testing/[b'building_CasV_1_h00_p039.jpg']_[[0. 1. 0. 0. 0.]]test.jpg",as_gray=1))
     #test1 = scipy.ndimage.imread("./testing/Building_Finnmarken91_0_h00_p081.jpg", flatten=1)
     #test2 = scipy.ndimage.imread("./testing/person_0042_h00_p012.jpg", flatten=1)
     vec.append(test)
@@ -141,7 +146,7 @@ def main(unused_argv):
     #testing(test1)
 
     #print(classify_multiple_projections(vec))
-    print(classify_multiple_projections_and_get_response_vector(vec,"/home/radek/Documents/Qt5/data/saved/CNN_binary_3D_Map_person_1",5))
+    print(classify_multiple_projections_and_get_response_vector(vec,"/home/radek/DeepLearning/CNN_binary/zapisane/CNN_range_SemanticKITTI",5)) #/home/radek/DeepLearning/CNN_binary/zapisane/CNN_range_SemanticKITTI #/home/radek/DeepLearning/CNN_binary/zapisane/CNN_range_3D #/home/radek/DeepLearning/CNN_binary/zapisane/Porownanie/CNN_binary_3D
 
     #for image in vec:
      #   result=classify(image)

@@ -66,6 +66,14 @@ import numpy as np
 import tensorflow as tf
 import argparse
 
+import io
+from contextlib import redirect_stdout
+from contextlib import  redirect_stderr
+
+import ctypes
+libc = ctypes.CDLL(None)
+
+
 
 
 
@@ -208,6 +216,13 @@ def _process_image(filename, coder):
 
     # Decode the RGB JPEG.
     image = coder.decode_jpeg(image_data)
+    """
+    sess = tf.Session()
+    jpeg_data = tf.placeholder(dtype=tf.string)
+    image = tf.image.decode_jpeg(jpeg_data, channels=3)
+    image = tf.Print(image, [filename])
+    image=sess.run(image,feed_dict={jpeg_data: image_data})
+    """
 
     # Check that image converted to RGB
     assert len(image.shape) == 3
@@ -422,6 +437,10 @@ def main(unused_argv):
                     help="path to test directory")
     ap.add_argument("-label", "--label_path", required=False,
                     help="path to label.txt")
+    ap.add_argument("-out_train", "--tfrecord_train", required=False,
+                    help="path to TFRecords train output direcotry.txt")
+    ap.add_argument("-out_validation", "--tfrecord_validation", required=False,
+                    help="path to TFRecords validation output direcotry.txt")
     args = vars(ap.parse_args())
     #if no arguments were given:
     if args["train_directory"]==None or args["test_directory"]==None or args["label_path"]==None:
@@ -434,6 +453,14 @@ def main(unused_argv):
         test_directory = args["test_directory"]
         train_directory = args["train_directory"]
         labels_file = args["label_path"]
+    #TFRecords directories:
+    if args["tfrecord_train"]==None or args["tfrecord_validation"]==None :
+        #use FLAGS as they are:
+        pass
+    else:
+        #overwrite flags
+        FLAGS.output_directory_train=args["tfrecord_train"]
+        FLAGS.output_directory_validation=args["tfrecord_validation"]
 
     assert not FLAGS.train_shards % FLAGS.num_threads, (
         'Please make the FLAGS.num_threads commensurate with FLAGS.train_shards')
@@ -449,12 +476,41 @@ def main(unused_argv):
     #print("------------------------------------")
     #_process_dataset('validation', FLAGS.validation_directory,
                      #FLAGS.validation_shards, FLAGS.labels_file)
-    print("Processing test------------------------------------")
-    _process_dataset('test', test_directory, FLAGS.test_shards, labels_file)
+    print("Processing validation------------------------------------")
+    _process_dataset('validation', test_directory, FLAGS.test_shards, labels_file)
     print("Processing train------------------------------------")
     _process_dataset('train', train_directory,FLAGS.train_shards, labels_file)
 
+def testing():
+
+    test_directory="/media/radek/SanDiskSSD/SemanticKITTI/projections/validation"
+    train_directory="/media/radek/SanDiskSSD/SemanticKITTI/projections/train"
+    labels_file = "/media/radek/SanDiskSSD/SemanticKITTI/projections/label.txt"
+
+    #TFRecords directories:
+
+    FLAGS.output_directory_train="/media/radek/SanDiskSSD/SemanticKITTI/TFRecords/train"
+    FLAGS.output_directory_validation="/media/radek/SanDiskSSD/SemanticKITTI/TFRecords/validation"
+
+    assert not FLAGS.train_shards % FLAGS.num_threads, (
+        'Please make the FLAGS.num_threads commensurate with FLAGS.train_shards')
+    assert not FLAGS.validation_shards % FLAGS.num_threads, (
+        'Please make the FLAGS.num_threads commensurate with '
+        'FLAGS.validation_shards')
+    assert not FLAGS.test_shards % FLAGS.num_threads, (
+        'Please make the FLAGS.num_threads commensurate with '
+        'FLAGS.test_shards')
+    print('Saving results to %s and %s' % (FLAGS.output_directory_train, FLAGS.output_directory_validation))
+
+    # Run it!
+    # print("------------------------------------")
+    # _process_dataset('validation', FLAGS.validation_directory,
+    # FLAGS.validation_shards, FLAGS.labels_file)
+    print("Processing validation------------------------------------")
+    _process_dataset('validation', test_directory, FLAGS.test_shards, labels_file)
+    print("Processing train------------------------------------")
+    _process_dataset('train', train_directory, FLAGS.train_shards, labels_file)
 
 if __name__ == '__main__':
     tf.app.run()
-
+    #testing()
